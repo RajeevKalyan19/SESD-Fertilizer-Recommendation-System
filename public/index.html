@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fertilizer Recommendation System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>🌾 Fertilizer Recommendation System</h1>
+            <div class="nav-links">
+                <span id="userInfo" class="user-info"></span>
+                <button id="logoutBtn" class="btn btn-secondary" style="display: none;">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- User Navigation Sidebar -->
+    <div id="userNav" class="sidebar" style="display: none;">
+        <div class="sidebar-header">
+            <h3>Menu</h3>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-page="dashboard">
+                <span>📊</span> Dashboard
+            </a>
+            <a href="#" class="nav-item" data-page="history">
+                <span>📜</span> History
+            </a>
+            <a href="#" class="nav-item" data-page="results">
+                <span>📋</span> Results
+            </a>
+            <a href="#" class="nav-item" data-page="feedback">
+                <span>💬</span> Feedback
+            </a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <!-- Login Page -->
+        <div id="loginPage" class="page">
+            <div class="auth-container">
+                <h2>Login</h2>
+                <div id="loginAlerts"></div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <p class="auth-link">Don't have an account? <a href="#" id="showRegister">Register</a></p>
+                </form>
+            </div>
+        </div>
+
+        <!-- Register Page -->
+        <div id="registerPage" class="page" style="display: none;">
+            <div class="auth-container">
+                <h2>Register</h2>
+                <div id="registerAlerts"></div>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" id="registerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="registerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="registerPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select id="registerRole">
+                            <option value="user">Farmer/User</option>
+                            <option value="agronomist">Agronomist/Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="registerPhone">
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="registerLocation">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    <p class="auth-link">Already have an account? <a href="#" id="showLogin">Login</a></p>
+                </form>
+            </div>
+        </div>
+
+        <!-- User Dashboard Page -->
+        <div id="dashboardPage" class="page dashboard-page" style="display: none;">
+            <div class="page-header">
+                <h2>📊 Dashboard</h2>
+                <p>Get personalized fertilizer recommendations for your crops</p>
+            </div>
+            <form id="recommendationForm" class="recommendation-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Crop Type *</label>
+                        <select id="cropSelect" required>
+                            <option value="">Select Crop</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Growth Stage *</label>
+                        <select id="growthStage" required>
+                            <option value="">Select Stage</option>
+                            <option value="sowing">Sowing</option>
+                            <option value="vegetative">Vegetative</option>
+                            <option value="flowering">Flowering</option>
+                            <option value="fruiting">Fruiting</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Soil pH</label>
+                        <input type="number" id="soilPh" step="0.1" min="0" max="14" placeholder="e.g., 6.5">
+                    </div>
+                    <div class="form-group">
+                        <label>Area (Hectares) *</label>
+                        <input type="number" id="area" step="0.01" min="0.01" required placeholder="e.g., 1.0">
+                    </div>
+                </div>
+
+                <h3>Soil Nutrients (Select Level)</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nitrogen (N) *</label>
+                        <select id="nitrogen" required>
+                            <option value="">Select Level</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Phosphorus (P) *</label>
+                        <select id="phosphorus" required>
+                            <option value="">Select Level</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Potassium (K) *</label>
+                        <select id="potassium" required>
+                            <option value="">Select Level</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Get Recommendation</button>
+            </form>
+        </div>
+
+        <!-- History Page -->
+        <div id="historyPage" class="page dashboard-page" style="display: none;">
+            <div class="page-header">
+                <h2>📜 Recommendation History</h2>
+                <p>View all your past fertilizer recommendations</p>
+            </div>
+            <div id="historyList" class="history-container"></div>
+        </div>
+
+        <!-- Results Page -->
+        <div id="resultsPage" class="page dashboard-page" style="display: none;">
+            <div class="page-header">
+                <h2>📋 Recommendation Results</h2>
+                <p>View detailed fertilizer recommendations</p>
+            </div>
+            <div id="recommendationResult" class="results-container"></div>
+        </div>
+
+        <!-- Feedback Page -->
+        <div id="feedbackPage" class="page dashboard-page" style="display: none;">
+            <div class="page-header">
+                <h2>💬 Feedback</h2>
+                <p>Share your feedback on recommendations</p>
+            </div>
+            <div id="feedbackContainer" class="feedback-container">
+                <div class="feedback-form-section">
+                    <h3>Submit Feedback</h3>
+                    <form id="feedbackForm">
+                        <div class="form-group">
+                            <label>Select Recommendation</label>
+                            <select id="feedbackRecSelect" required>
+                                <option value="">Select a recommendation...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Rating * (1-5)</label>
+                            <div class="rating-input">
+                                <input type="number" id="feedbackRating" min="1" max="5" required>
+                                <span class="rating-hint">1 = Poor, 5 = Excellent</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Comments</label>
+                            <textarea id="feedbackComments" rows="5" placeholder="Share your experience with this recommendation..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                    </form>
+                </div>
+                <div class="feedback-list-section">
+                    <h3>Your Feedback History</h3>
+                    <div id="feedbackList" class="feedback-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="adminDashboard" class="page" style="display: none;">
+            <h2>Admin Panel - Knowledge Base Management</h2>
+            
+            <div class="admin-tabs">
+                <button class="tab-btn active" data-tab="crops">Crops</button>
+                <button class="tab-btn" data-tab="fertilizers">Fertilizers</button>
+                <button class="tab-btn" data-tab="rules">Rules</button>
+                <button class="tab-btn" data-tab="feedbacks">Feedbacks</button>
+            </div>
+
+            <!-- Crops Tab -->
+            <div id="cropsTab" class="tab-content active">
+                <div class="admin-section-header">
+                    <h3>Manage Crops</h3>
+                    <button onclick="showCropForm()" class="btn btn-primary" id="addCropBtn">+ Add New Crop</button>
+                </div>
+                
+                <div id="cropFormSection" style="display: none;">
+                    <h4 id="cropFormTitle">Add New Crop</h4>
+                    <form id="cropForm">
+                        <input type="hidden" id="cropId">
+                        <div class="form-group">
+                            <label>Crop Name *</label>
+                            <input type="text" id="cropName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Typical NPK Requirements (kg/hectare)</label>
+                            <div class="form-row">
+                                <input type="number" id="cropN" placeholder="Nitrogen (N)" step="0.1" min="0">
+                                <input type="number" id="cropP" placeholder="Phosphorus (P)" step="0.1" min="0">
+                                <input type="number" id="cropK" placeholder="Potassium (K)" step="0.1" min="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Recommended Fertilizers</label>
+                            <div id="recommendedFertilizersList" class="fertilizers-list"></div>
+                            <button type="button" onclick="addFertilizerToCrop()" class="btn btn-secondary" style="margin-top: 10px;">+ Add Fertilizer</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea id="cropNotes" rows="3" placeholder="Additional information about this crop..."></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Save Crop</button>
+                            <button type="button" onclick="cancelCropForm()" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div id="cropsList" style="margin-top: 30px;"></div>
+            </div>
+
+            <!-- Fertilizers Tab -->
+            <div id="fertilizersTab" class="tab-content">
+                <h3>Manage Fertilizers</h3>
+                <form id="fertilizerForm">
+                    <div class="form-group">
+                        <label>Fertilizer ID (leave empty for new)</label>
+                        <input type="text" id="fertilizerId">
+                    </div>
+                    <div class="form-group">
+                        <label>Fertilizer Name *</label>
+                        <input type="text" id="fertilizerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nutrient Composition (N-P-K) *</label>
+                        <div class="form-row">
+                            <input type="number" id="fertN" placeholder="N %" step="0.1" required>
+                            <input type="number" id="fertP" placeholder="P %" step="0.1" required>
+                            <input type="number" id="fertK" placeholder="K %" step="0.1" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Type *</label>
+                        <select id="fertilizerType" required>
+                            <option value="Urea">Urea</option>
+                            <option value="DAP">DAP</option>
+                            <option value="Organic">Organic</option>
+                            <option value="NPK">NPK</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Instructions</label>
+                        <textarea id="fertilizerInstructions" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Fertilizer</button>
+                </form>
+                <div id="fertilizersList" style="margin-top: 30px;"></div>
+            </div>
+
+            <!-- Rules Tab -->
+            <div id="rulesTab" class="tab-content">
+                <h3>Manage Rules</h3>
+                <form id="ruleForm">
+                    <div class="form-group">
+                        <label>Rule ID (leave empty for new rule)</label>
+                        <input type="text" id="ruleId">
+                    </div>
+                    <div class="form-group">
+                        <label>Crop ID *</label>
+                        <input type="text" id="ruleCropId" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Soil pH Range</label>
+                        <div class="form-row">
+                            <input type="number" id="phMin" placeholder="Min" step="0.1">
+                            <input type="number" id="phMax" placeholder="Max" step="0.1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>NPK Levels</label>
+                        <div class="form-row">
+                            <select id="ruleN">
+                                <option value="">Any</option>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                            <select id="ruleP">
+                                <option value="">Any</option>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                            <select id="ruleK">
+                                <option value="">Any</option>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Growth Stage</label>
+                        <select id="ruleGrowthStage">
+                            <option value="">Any</option>
+                            <option value="sowing">Sowing</option>
+                            <option value="vegetative">Vegetative</option>
+                            <option value="flowering">Flowering</option>
+                            <option value="fruiting">Fruiting</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Recommendations (JSON format) *</label>
+                        <textarea id="ruleRecommendations" rows="8" placeholder='[
+  {
+    "fertilizerId": "FERT001",
+    "quantityPerHa": 150,
+    "timing": "Apply now and again after 30 days"
+  },
+  {
+    "fertilizerId": "FERT002",
+    "quantityPerHa": 100,
+    "timing": "Apply at sowing"
+  }
+]' required></textarea>
+                        <small style="color: #666; display: block; margin-top: 5px;">
+                            Format: Array of objects with "fertilizerId", "quantityPerHa" (number), and "timing" (string). 
+                            See JSON_FORMAT_GUIDE.md for examples.
+                        </small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Rule</button>
+                </form>
+                <div id="rulesList" style="margin-top: 30px;"></div>
+            </div>
+
+            <!-- Feedbacks Tab -->
+            <div id="feedbacksTab" class="tab-content">
+                <h3>User Feedbacks</h3>
+                <div id="feedbackStats" class="feedback-stats" style="margin-bottom: 30px;"></div>
+                <div class="feedback-filters" style="margin-bottom: 20px;">
+                    <label>Sort by: </label>
+                    <select id="feedbackSort">
+                        <option value="desc">Newest First</option>
+                        <option value="asc">Oldest First</option>
+                    </select>
+                    <label style="margin-left: 20px;">Rating: </label>
+                    <select id="feedbackRatingFilter">
+                        <option value="">All Ratings</option>
+                        <option value="5">5 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="2">2 Stars</option>
+                        <option value="1">1 Star</option>
+                    </select>
+                    <button onclick="loadAdminFeedbacks()" class="btn btn-primary" style="margin-left: 20px; width: auto; padding: 8px 20px;">Refresh</button>
+                </div>
+                <div id="feedbacksList" class="feedbacks-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
+
